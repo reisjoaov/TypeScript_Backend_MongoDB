@@ -32,4 +32,3 @@ app.listen(port, () => {
     console.info(`Servidor rodando na porta: http://localhost:${port} \n
         📚 Documentação Swagger disponível em: http://localhost:3000/api-docs`);
 });
-
