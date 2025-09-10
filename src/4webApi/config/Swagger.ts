@@ -11,7 +11,7 @@ const options = {
             description: 'API REST para gerenciamento de usuários desenvolvida com Express e TypeScript',
             contact: {
                 name: 'Desenvolvedor',
-                email: 'dev@exemplo.com'
+                email: 'renan.torres@prof.infnet.edu.br'
             },
             license: {
                 name: 'MIT',
@@ -44,10 +44,9 @@ const options = {
         ]
     },
     apis: [
-        './src/Api/*Controller.ts',  // Caminho para seus controllers
-        './src/Api/controllers/*.ts',  // Caminho para seus controllers
-        './src/Api/routes/*.ts',       // Caminho para suas rotas (se houver)
-        './src/Enities/models/*.ts',       // Caminho para seus models (se houver)
+        './src/4webApi/controllers/*.ts',  // Caminho para seus controllers
+        './src/4webApi/routes/*.ts',       // Caminho para suas rotas (se houver)
+        //'./src/Enities/models/*.ts',       // Caminho para seus models (se houver)
     ],
 };
 
