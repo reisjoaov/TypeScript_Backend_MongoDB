@@ -9,7 +9,7 @@ import { injectable } from 'inversify';
 
 @injectable()
 export default class UsuarioRepositorio implements UsuarioRepositorioInterface {
-    private caminhoArquivo: string;
+    private caminhoArquivo: string = 'CHAVE DE ACESSO';
 
     constructor(caminho: string = 'fakeBD.json') {
         this.caminhoArquivo = path.join(__dirname, caminho);

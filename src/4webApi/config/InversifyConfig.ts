@@ -7,18 +7,16 @@ import UsuarioService from '../../2domain/services/UsuarioService';
 import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioRepositorioInterface';
 import UsuarioRepositorio from '../../3infra/repositorios/UsuarioRepositorio';
 
-
 const container = new Container();
 
 container
     .bind<UsuarioRepositorioInterface>('UsuarioRepositorio')
-    .to(UsuarioRepositorio);
+    .to(UsuarioRepositorio).inRequestScope();
 container
     .bind<UsuarioServiceInterface>('UsuarioService')
-    .to(UsuarioService);
+    .to(UsuarioService).inRequestScope();
 container
     .bind<UsuarioController>('UsuarioController')
-    .to(UsuarioController);
-
+    .to(UsuarioController).inRequestScope();
 
 export default container;

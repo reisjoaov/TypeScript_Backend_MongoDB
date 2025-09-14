@@ -449,4 +449,4 @@ Ex.:
     }
 ```
 
-
+Precia pegar o .env-example e renomar para .env com sua senhas

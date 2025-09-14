@@ -5,10 +5,14 @@ import { basicAuthMiddleware } from './3infra/middlewares/basicAuth';
 import ErrorHandler from './3infra/middlewares/ErrorHandler';
 import setupSwagger from './4webApi/config/Swagger';
 import NotFoundException from './2domain/exceptions/NotFoundExpection';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+console.log('MONGO_DB_KEY', process.env.MONGO_DB_KEY);
 
 const app = express();
 const port = 3000;
-
 app.use(express.json());
 
 
@@ -32,4 +36,3 @@ app.listen(port, () => {
     console.info(`Servidor rodando na porta: http://localhost:${port} \n
         📚 Documentação Swagger disponível em: http://localhost:3000/api-docs`);
 });
-
