@@ -10,5 +10,4 @@ interface UsuarioRepositorioInterface {
     substituirUsuario(id: number, dadosCompletos: Usuario): UsuarioSchema | undefined;
 }
 
-
 export default UsuarioRepositorioInterface;
