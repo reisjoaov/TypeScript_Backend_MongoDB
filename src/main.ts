@@ -7,10 +7,6 @@ import setupSwagger from './4webApi/config/Swagger';
 import NotFoundException from './2domain/exceptions/NotFoundExpection';
 import dotenv from 'dotenv';
 
-dotenv.config();
-
-console.log('MONGO_DB_KEY', process.env.MONGO_DB_KEY);
-
 const app = express();
 const port = 3000;
 app.use(express.json());

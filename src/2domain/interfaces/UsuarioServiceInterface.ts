@@ -11,9 +11,9 @@ export default interface UsuarioServiceInterface {
 
     criarUsuario(dadosUsuario: CriarUsarioDTO): Promise<Usuario[]>;
 
-    atualizarUsuarioParcial(id: number, dadosAtualizacao: Partial<AtualizarUsuarioDTO>): ViewUsuarioDTO;
+    atualizarUsuarioParcial(id: number, dadosAtualizacao: Partial<AtualizarUsuarioDTO>): Promise<ViewUsuarioDTO>;
 
-    substituirUsuario(id: number, dadosCompletos: Usuario): ViewUsuarioDTO;
+    substituirUsuario(id: number, dadosCompletos: Usuario): Promise<ViewUsuarioDTO>;
 
     deletarUsuario(id: number): Promise<boolean>;
     // eslint-disable-next-line semi

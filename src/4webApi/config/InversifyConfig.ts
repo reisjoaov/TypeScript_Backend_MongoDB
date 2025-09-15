@@ -5,13 +5,14 @@ import UsuarioController from '../controllers/UsuariosController';
 import UsuarioServiceInterface from '../../2domain/interfaces/UsuarioServiceInterface';
 import UsuarioService from '../../2domain/services/UsuarioService';
 import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRepositorioInterface';
-import UsuarioRepositorio from '../../3infra/repositorios/UsuarioAsyncRepositorio';
+// import UsuarioRepositorio from '../../3infra/repositorios/UsuarioAsyncRepositorio';
+import UsuarioMongoRepositorio from '../../3infra/repositorios/UsuarioAsyncMongoRepositorio';
 
 const container = new Container();
 
 container
     .bind<UsuarioRepositorioInterface>('UsuarioRepositorio')
-    .to(UsuarioRepositorio).inRequestScope();
+    .to(UsuarioMongoRepositorio).inRequestScope();
 container
     .bind<UsuarioServiceInterface>('UsuarioService')
     .to(UsuarioService).inRequestScope();

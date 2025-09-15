@@ -1,4 +1,3 @@
-import { Usuario } from "./Usuario";
-
+import { Usuario } from '../../1entidades/Usuario';
 
 export type ViewUsuarioDTO = Omit<Usuario, 'senha'>;
