@@ -97,10 +97,10 @@ export default class UsuarioService implements UsuarioServiceInterface {
     }
 
     public async deletarUsuario(id: number): Promise<boolean>{
-        const usuario = this.usuarioRepositorio.getUsuarioPorId(id);
-        if (!usuario) {
+        const success = await this.usuarioRepositorio.deletarUsuario(id);
+        if (!success) {
             throw new NotFoundException('Usuario não encontrado');
         }
-        return this.usuarioRepositorio.deletarUsuario(id);
+        return success;
     }
 }

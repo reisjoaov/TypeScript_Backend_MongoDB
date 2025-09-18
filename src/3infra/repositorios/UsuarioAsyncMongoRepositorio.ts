@@ -8,7 +8,6 @@ import { Collection, MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import BdException from '../../2domain/exceptions/BdException';
 
 dotenv.config();
-//console.log('MONGO_DB_KEY', process.env.MONGO_DB_KEY);
 
 @injectable()
 export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterface {
@@ -104,44 +103,36 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
     }
 
     public async deletarUsuario(id: number): Promise<boolean> {
-        throw new Error('not implemented');
-        const usuarios = await this.getUsuarios();
-        const indiceUsuario = usuarios.findIndex(user => user.id === id);
-
-        if (indiceUsuario === -1) {
-            return false; // Usuário não encontrado
+        const { collection, client } = await this.getCollectionAndClient();
+        try {
+            const results = await collection.deleteOne ({id});
+            return ( results.deletedCount > 0);
+        } catch (e) {
+            console.error(e);
+            throw new BdException('Erro ao deletar um usuário no Banco de Dados');
+        } finally {
+            client.close();
         }
-
-        // usuarios.splice(indiceUsuario, 1);
-        // const bdAtualizado = await this.acessoDB();
-        // bdAtualizado.users = usuarios;
-
-        // return await this.reescreverBD(bdAtualizado);
     }
 
     // PATCH - Atualização parcial (apenas campos fornecidos)
     public async atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): Promise<UsuarioSchema | undefined> {
-        throw new Error('not implemented');
-        // const bd = await this.acessoDB();
-        // const usuarios = bd.users;
-        // const indiceUsuario = usuarios.findIndex(user => user.id === id);
-
-        // if (indiceUsuario === -1) {
-        //     return undefined; // Usuário não encontrado
-        // }
-
-        // // Atualiza apenas os campos fornecidos, mantendo os existentes
-        // // O spread operator (...) preserva os valores originais e sobrescreve apenas os campos enviados
-        // usuarios[indiceUsuario] = {
-        //     ...usuarios[indiceUsuario], // Mantém todos os campos existentes
-        //     ...dadosAtualizados,        // Sobrescreve apenas os campos fornecidos
-        //     id                          // Garante que o ID não seja alterado
-        // };
-
-        // bd.users = usuarios;
-        // const sucesso = await this.reescreverBD(bd);
-
-        // return sucesso ? usuarios[indiceUsuario] : undefined;
+        const { collection, client } = await this.getCollectionAndClient();
+        try {
+            const dadosPadraoMongo = {
+                $set: {
+                    ...(dadosAtualizados.nome !== undefined && { nome: dadosAtualizados.nome }),
+                    ...(dadosAtualizados.ativo !== undefined && { ativo: dadosAtualizados.ativo }),
+                },
+            };
+            await collection.updateOne({ id }, dadosPadraoMongo);
+            return this.getUsuarioPorId(id);
+        } catch (e) {
+            console.error(e);
+            throw new BdException('Erro ao atualizar um usuário no Banco de Dados');
+        } finally {
+            client.close();
+        }
     }
 
     // PUT - Substituição completa (todos os campos obrigatórios)

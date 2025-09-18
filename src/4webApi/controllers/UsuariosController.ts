@@ -225,7 +225,7 @@ class UsuarioController {
      *                   type: string
      *                   example: "Credenciais inválidas"
      */
-    public async buscarUsuarios(req: Request, res: Response) {
+    public async buscarUsuarios(req: Request, res: Response): Promise<void> {
         const response = await this.usuarioService.buscarTodos();
         res.json(response);
     }
@@ -262,7 +262,7 @@ class UsuarioController {
      *       404:
      *         $ref: '#/components/responses/NotFound'
      */
-    public async buscarUsuarioPorId(req: Request, res: Response) {
+    public async buscarUsuarioPorId(req: Request, res: Response): Promise<void> {
         const erros = validationResult(req);
         if (!erros.isEmpty()) {
             throw new BadRequestException(erros.array());
@@ -372,7 +372,7 @@ class UsuarioController {
      *       404:
      *         $ref: '#/components/responses/NotFound'
      */
-    public async atualizarUsuarioParcial(req: Request, res: Response) {
+    public async atualizarUsuarioParcial(req: Request, res: Response): Promise<void> {
         const erros = validationResult(req);
         if (!erros.isEmpty()) {
             res.status(400).json({ erros: erros.array() });
@@ -454,7 +454,7 @@ class UsuarioController {
      *         $ref: '#/components/responses/NotFound'
      */
     // PUT - Substituição completa (substitui todos os campos)
-    public async substituirUsuario(req: Request, res: Response) {
+    public async substituirUsuario(req: Request, res: Response): Promise<void> {
         const erros = validationResult(req);
         if (!erros.isEmpty()) {
             res.status(400).json({ erros: erros.array() });
@@ -505,7 +505,7 @@ class UsuarioController {
      *                 summary: ID não fornecido
      *                 value: "Id não enviado!"
      */
-    public async deletarUsuarioPorId(req: Request, res: Response) {
+    public async deletarUsuarioPorId(req: Request, res: Response): Promise<void> {
         const id = req.params.id;
         if (!id) {
             res.json('Id não enviado!');
@@ -516,6 +516,5 @@ class UsuarioController {
         return;
     }
 }
-
 
 export default UsuarioController;
