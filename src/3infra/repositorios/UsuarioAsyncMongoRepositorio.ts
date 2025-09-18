@@ -4,10 +4,39 @@ import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRe
 import 'reflect-metadata';
 import { injectable } from 'inversify';
 import dotenv from 'dotenv';
-import { Collection, MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
+import { BSONType, Collection, MongoClient, MongoServerError, ObjectId, ServerApiVersion } from 'mongodb';
 import BdException from '../../2domain/exceptions/BdException';
 
 dotenv.config();
+
+const jsonSchema = {
+    $jsonSchema: {
+    bsonType: 'object',
+    required: [
+      '_id',
+      'ativo',
+      'id',
+      'nome'
+    ],
+    properties: {
+      _id: {
+        bsonType: 'objectId'
+      },
+      ativo: {
+        bsonType: 'bool'
+      },
+      id: {
+        bsonType: 'int'
+      },
+      nome: {
+        bsonType: 'string'
+      },
+      senha: {
+        bsonType: 'string'
+      }
+    }
+  }
+};
 
 @injectable()
 export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterface {
@@ -19,6 +48,46 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
         this.uri = process.env.MONGO_DB_KEY ?? '';
         this.collectionName = 'users';
     }
+
+    async createCollectionWithValidation() {
+        const client = new MongoClient(this.uri);
+        await client.connect();
+        const db = client.db(this.dbname);
+
+        try {
+            await db.createCollection(this.collectionName, {
+                validator: {
+                    $jsonSchema: jsonSchema
+                }
+            });
+            console.info('Collection criada com validações!');
+        } catch (e) {
+            if (e instanceof MongoServerError && e.message.includes('already exists')) {
+                console.info(`Collection ${this.collectionName} não foi criada, pois já existe.`);
+            } else {
+                throw e;
+            }
+        } finally {
+            await client.close();
+        }
+    }
+        
+    // async updateCollectionValidation() {
+    //     const client = new MongoClient(this.uri);
+    //     await client.connect();
+    //     const db = client.db (this.dbname);
+        
+    //     await db.command({
+    //         collMod: this.collectionName,
+    //         validator: {
+    //             $jsonSchema: jsonSchema
+    //         },
+    //     validationLevel: 'strict'
+    //     // pode ser "moderate" se quiser menos restrição            
+    //     });
+    
+    // console.log('Collection validation updated!'); await client.close();
+    // }
 
     private async getCollectionAndClient(): Promise<{
         collection: Collection<UsuarioSchema>,
@@ -36,11 +105,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
             await client.connect();
             const db = client.db(this.dbname);
             const collection = db.collection<UsuarioSchema>(this.collectionName);
-            
-            //Lembrar de fechar após usar => client.close();
-            
             return {collection, client};
-
         } catch (error) {
             if (
                 error instanceof Error

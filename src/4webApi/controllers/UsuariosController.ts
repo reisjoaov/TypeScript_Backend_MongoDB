@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { Usuario } from '../../1entidades/Usuario';
 import { body, param, validationResult } from 'express-validator';
 import BadRequestException from '../../2domain/exceptions/BadRequestException';
@@ -7,6 +7,13 @@ import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { AtualizarUsuarioDTO } from '../../2domain/dtos/AtualizarUsuarioDTO';
 import { CriarUsarioDTO } from '../../2domain/dtos/CriarUsarioDTO';
+
+// const asyncHandler =
+//     (fn: Function) => (req: Request, res: Response, next: NextFunction) =>{
+//         Promise.resolve(
+//             fn(req, res, next)
+//         ).catch(next);
+//     };
 
 /**
  * @swagger
