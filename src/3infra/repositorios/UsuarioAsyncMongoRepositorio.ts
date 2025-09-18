@@ -4,7 +4,7 @@ import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRe
 import 'reflect-metadata';
 import { injectable } from 'inversify';
 import dotenv from 'dotenv';
-import { BSONType, Collection, MongoClient, MongoServerError, ObjectId, ServerApiVersion } from 'mongodb';
+import { Collection, MongoClient, MongoServerError, ObjectId, ServerApiVersion } from 'mongodb';
 import BdException from '../../2domain/exceptions/BdException';
 
 dotenv.config();
