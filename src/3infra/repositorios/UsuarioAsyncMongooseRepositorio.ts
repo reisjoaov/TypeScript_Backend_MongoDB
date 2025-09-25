@@ -1,33 +1,41 @@
-import { UsuarioSchemaDriver } from './UsuarioSchema';
+//import { UserModel, UsuarioSchemaDriver } from './UsuarioSchema';
 import { Usuario } from '../../1entidades/Usuario';
 import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRepositorioInterface';
 import 'reflect-metadata';
 import { injectable } from 'inversify';
 import dotenv from 'dotenv';
-import { Collection, MongoClient, MongoServerError, ObjectId, ServerApiVersion } from 'mongodb';
-import BdException from '../../2domain/exceptions/BdException';
+import { UserModel } from './UsuarioSchema';
+//import { Collection, MongoClient, MongoServerError, ObjectId, ServerApiVersion } from 'mongodb';
+//import BdException from '../../2domain/exceptions/BdException';
 
 dotenv.config();
 
 @injectable()
 export default class UsuarioMongooseRepositorio implements UsuarioRepositorioInterface {
-    getUsuarios(): Promise<UsuarioSchemaDriver[]> {
+    constructor(){
+    }
+
+    async getUsuarios(): Promise<Usuario[]> {
+        const users: Usuario[] = await UserModel.find();
+        return users;
+    }
+
+    async getUsuarioPorId(id: number): Promise<Usuario | undefined> {
+        const user = await UserModel.findOne({id}) ?? undefined;
+        return user;
+    }
+    async criarUsario(usuario: Usuario): Promise<Usuario[]> {
         throw new Error('Method not implemented.');
     }
-    getUsuarioPorId(id: number): Promise<UsuarioSchemaDriver | undefined> {
+    async deletarUsuario(id: number): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
-    criarUsario(usuario: Usuario): Promise<UsuarioSchemaDriver[]> {
+    async atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): Promise<Usuario | undefined> {
         throw new Error('Method not implemented.');
     }
-    deletarUsuario(id: number): Promise<boolean> {
+    async substituirUsuario(id: number, dadosCompletos: Usuario): Promise<Usuario | undefined> {
         throw new Error('Method not implemented.');
     }
-    atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): Promise<UsuarioSchemaDriver | undefined> {
-        throw new Error('Method not implemented.');
-    }
-    substituirUsuario(id: number, dadosCompletos: Usuario): Promise<UsuarioSchemaDriver | undefined> {
-        throw new Error('Method not implemented.');
-    }
+
     
 }

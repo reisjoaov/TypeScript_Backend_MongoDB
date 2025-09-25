@@ -54,7 +54,9 @@ export default class UsuarioRepositorio implements UsuarioRepositorioInterface {
 
     public async criarUsario(usuario: Usuario): Promise<UsuarioSchemaDriver[]> {
         const usuarios = await this.getUsuarios();
-        usuarios.push({ ...usuario });
+        usuarios.push({
+            ...usuario
+        });
 
         const bdAtualizado = await this.acessoDB();
         bdAtualizado.users = usuarios;
@@ -115,12 +117,11 @@ export default class UsuarioRepositorio implements UsuarioRepositorioInterface {
         // Substitui completamente o usuário com os novos dados
         // Mantém apenas o ID original e alguns campos que não devem ser alterados pelo usuário
         const usuarioAtualizado: UsuarioSchemaDriver = {
-            id,                           // ID original (não pode ser alterado)
+            id, // ID original (não pode ser alterado)
             nome: dadosCompletos.nome,
             ativo: dadosCompletos.ativo,
             saldo: dadosCompletos.saldo,
-            KAMV: usuarios[indiceUsuario].KAMV,  // Campo gerado pelo sistema, não alterável
-            // Qualquer outro campo não enviado será removido/resetado
+            KAMV: usuarios[indiceUsuario].KAMV
         };
 
         usuarios[indiceUsuario] = usuarioAtualizado;

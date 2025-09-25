@@ -20,7 +20,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
     }
 
     public async buscarId(id: number): Promise<ViewUsuarioDTO>{
-        const usuario = await this.usuarioRepositorio.getUsuarioPorId(id);
+        const usuario: Usuario | undefined = await this.usuarioRepositorio.getUsuarioPorId(id);
         if (!usuario) {
             throw new NotFoundException('Usuario não encontrado');
         }
@@ -29,19 +29,19 @@ export default class UsuarioService implements UsuarioServiceInterface {
             id: usuario.id,
             nome: usuario.nome,
             ativo: usuario.ativo,
-            NumeroDoc: usuario.KAMV,
+            NumeroDoc: usuario.NumeroDoc,
         };
 
         return usuarioDto;
     }
 
     public async buscarTodos(): Promise <ViewUsuarioDTO[]> {
-        const usuarios = await this.usuarioRepositorio.getUsuarios();
+        const usuarios: Usuario[] = await this.usuarioRepositorio.getUsuarios();
         return usuarios.map(usuario => ({
             id: usuario.id,
             nome: usuario.nome,
             ativo: usuario.ativo,
-            NumeroDoc: usuario.KAMV,
+            NumeroDoc: usuario.NumeroDoc,
         } as ViewUsuarioDTO));
     }
 
@@ -77,7 +77,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             id: usuario.id,
             nome: usuario.nome,
             ativo: usuario.ativo,
-            NumeroDoc: usuario.KAMV,
+            NumeroDoc: usuario.NumeroDoc
         };
     }
 
@@ -92,7 +92,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             id: usuario.id,
             nome: usuario.nome,
             ativo: usuario.ativo,
-            NumeroDoc: usuario.KAMV,
+            NumeroDoc: usuario.NumeroDoc,
         };
     }
 

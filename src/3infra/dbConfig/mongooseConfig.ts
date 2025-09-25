@@ -5,7 +5,7 @@ dotenv.config();
 class MongooseConfig {
   static async connect(): Promise<void> {
     try {
-      const CHAVEMONGO = `${process.env.MONGO_DB_KEY}${process.env.DATABASDE}?${process.env.DB_OPTIONS}`;
+      const CHAVEMONGO = `${process.env.MONGO_DB_KEY}${process.env.DATABASE}?${process.env.DB_OPTIONS}`;
       if (!CHAVEMONGO)
         throw new Error('Chave do DB não encontrada');
 

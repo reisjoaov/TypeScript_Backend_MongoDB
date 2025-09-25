@@ -1,9 +1,7 @@
-import { ObjectId } from 'mongodb';
 import mongoose, { Schema } from 'mongoose';
 import { Usuario } from '../../1entidades/Usuario';
 
 export type UsuarioSchemaDriver = {
-    _id: ObjectId,
     id: number,
     nome: string,
     ativo: boolean,

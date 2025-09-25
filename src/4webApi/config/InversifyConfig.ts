@@ -6,13 +6,14 @@ import UsuarioServiceInterface from '../../2domain/interfaces/UsuarioServiceInte
 import UsuarioService from '../../2domain/services/UsuarioService';
 import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRepositorioInterface';
 // import UsuarioRepositorio from '../../3infra/repositorios/UsuarioAsyncRepositorio';
-import UsuarioMongoRepositorio from '../../3infra/repositorios/UsuarioAsyncMongoRepositorio';
+//import UsuarioMongoRepositorio from '../../3infra/repositorios/UsuarioAsyncMongoRepositorio';
+import UsuarioMongooseRepositorio from '../../3infra/repositorios/UsuarioAsyncMongooseRepositorio';
 
 const container = new Container();
 
 container
     .bind<UsuarioRepositorioInterface>('UsuarioRepositorio')
-    .to(UsuarioMongoRepositorio).inRequestScope();
+    .to(UsuarioMongooseRepositorio).inRequestScope();
 container
     .bind<UsuarioServiceInterface>('UsuarioService')
     .to(UsuarioService).inRequestScope();
