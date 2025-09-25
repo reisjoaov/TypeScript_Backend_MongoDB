@@ -6,12 +6,15 @@ import ErrorHandler from './3infra/middlewares/ErrorHandler';
 import setupSwagger from './4webApi/config/Swagger';
 import NotFoundException from './2domain/exceptions/NotFoundExpection';
 import dotenv from 'dotenv';
+import MongooseConfig from './3infra/dbConfig/mongooseConfig';
 
 const app = express();
 const port = 3000;
 app.use(express.json());
 
 app.use(Logger.init());
+
+MongooseConfig.connect();
 
 app.use('/api', basicAuthMiddleware, routes);
 setupSwagger(app);

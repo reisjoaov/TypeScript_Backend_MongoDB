@@ -1,4 +1,4 @@
-import { UsuarioSchema } from './UsuarioSchema';
+import { UsuarioSchemaDriver } from './UsuarioSchema';
 import { Usuario } from '../../1entidades/Usuario';
 import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRepositorioInterface';
 import 'reflect-metadata';
@@ -47,6 +47,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
     ){
         this.uri = process.env.MONGO_DB_KEY ?? '';
         this.collectionName = 'users';
+        this.createCollectionWithValidation().catch(console.error);
     }
 
     async createCollectionWithValidation() {
@@ -90,7 +91,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
     // }
 
     private async getCollectionAndClient(): Promise<{
-        collection: Collection<UsuarioSchema>,
+        collection: Collection<UsuarioSchemaDriver>,
         client: MongoClient
     }>{
         const client = new MongoClient(this.uri, {
@@ -104,7 +105,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
         try {    
             await client.connect();
             const db = client.db(this.dbname);
-            const collection = db.collection<UsuarioSchema>(this.collectionName);
+            const collection = db.collection<UsuarioSchemaDriver>(this.collectionName);
             return {collection, client};
         } catch (error) {
             if (
@@ -117,7 +118,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
         }
     }
 
-    public async getUsuarios(): Promise<UsuarioSchema[]> {
+    public async getUsuarios(): Promise<UsuarioSchemaDriver[]> {
         const {collection, client} = await this.getCollectionAndClient();
         try {
             const users = await collection
@@ -131,7 +132,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
         }
     }
 
-    public async getUsuarioPorId(id: number): Promise<UsuarioSchema | undefined> {
+    public async getUsuarioPorId(id: number): Promise<UsuarioSchemaDriver | undefined> {
         const {collection, client} = await this.getCollectionAndClient();
         try{
             const user = await collection.findOne({id: id});
@@ -143,7 +144,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
         }
     }
 
-    public async criarUsario(usuario: Usuario): Promise<UsuarioSchema[]> {
+    public async criarUsario(usuario: Usuario): Promise<UsuarioSchemaDriver[]> {
         const {collection, client} = await this.getCollectionAndClient();
         const maiorId = await collection
             .find({})
@@ -156,7 +157,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
                 id: maiorId[0].id + 1,
                 nome: usuario.nome,
                 ativo: usuario.ativo            
-            } as UsuarioSchema;
+            } as UsuarioSchemaDriver;
             collection.insertOne(novoUsuario);
             const users = await collection.find({}).toArray();
             return users;        
@@ -181,7 +182,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
     }
 
     // PATCH - Atualização parcial (apenas campos fornecidos)
-    public async atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): Promise<UsuarioSchema | undefined> {
+    public async atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): Promise<UsuarioSchemaDriver | undefined> {
         const { collection, client } = await this.getCollectionAndClient();
         try {
             const dadosPadraoMongo = {
@@ -201,7 +202,7 @@ export default class UsuarioMongoRepositorio implements UsuarioRepositorioInterf
     }
 
     // PUT - Substituição completa (todos os campos obrigatórios)
-    public async substituirUsuario(id: number, dadosCompletos: Usuario): Promise<UsuarioSchema | undefined> {
+    public async substituirUsuario(id: number, dadosCompletos: Usuario): Promise<UsuarioSchemaDriver | undefined> {
         throw new Error('not implemented');
         // const bd = await this.acessoDB();
         // const usuarios = bd.users;

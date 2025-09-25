@@ -1,11 +1,12 @@
 import path from 'path';
 import fs from 'fs';
 import { DBSchema } from './DBSchema';
-import { UsuarioSchema } from './UsuarioSchema';
+import { UsuarioSchemaDriver } from './UsuarioSchema';
 import { Usuario } from '../../1entidades/Usuario';
 import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioRepositorioInterface';
 import 'reflect-metadata';
 import { injectable } from 'inversify';
+import { ObjectId } from 'mongodb';
 
 @injectable()
 export default class UsuarioRepositorio implements UsuarioRepositorioInterface {
@@ -28,21 +29,24 @@ export default class UsuarioRepositorio implements UsuarioRepositorioInterface {
         }
     }
 
-    public getUsuarios(): UsuarioSchema[] {
+    public getUsuarios(): UsuarioSchemaDriver[] {
         const bd = this.acessoDB();
         const usuarios = bd.users;
         return usuarios;
     }
 
-    public getUsuarioPorId(id: number): UsuarioSchema | undefined {
+    public getUsuarioPorId(id: number): UsuarioSchemaDriver | undefined {
         const usuarios = this.getUsuarios();
         return usuarios.find(user => user.id === id);
     }
 
-    public criarUsario(usuario: Usuario): UsuarioSchema[] {
+    public criarUsario(usuario: Usuario): UsuarioSchemaDriver[] {
         const usuarios = this.getUsuarios();
         usuarios.push(
-            { ...usuario }
+            {
+                ...usuario,
+                _id: new ObjectId
+            }
         );
         const bdAtualizado = this.acessoDB();
         bdAtualizado.users = usuarios;
@@ -66,7 +70,7 @@ export default class UsuarioRepositorio implements UsuarioRepositorioInterface {
     }
 
     // PATCH - Atualização parcial (apenas campos fornecidos)
-    public atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): UsuarioSchema | undefined {
+    public atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): UsuarioSchemaDriver | undefined {
         const bd = this.acessoDB();
         const usuarios = bd.users;
         const indiceUsuario = usuarios.findIndex(user => user.id === id);
@@ -90,7 +94,7 @@ export default class UsuarioRepositorio implements UsuarioRepositorioInterface {
     }
 
     // PUT - Substituição completa (todos os campos obrigatórios)
-    public substituirUsuario(id: number, dadosCompletos: Usuario): UsuarioSchema | undefined {
+    public substituirUsuario(id: number, dadosCompletos: Usuario): UsuarioSchemaDriver | undefined {
         const bd = this.acessoDB();
         const usuarios = bd.users;
         const indiceUsuario = usuarios.findIndex(user => user.id === id);
@@ -101,13 +105,13 @@ export default class UsuarioRepositorio implements UsuarioRepositorioInterface {
 
         // Substitui completamente o usuário com os novos dados
         // Mantém apenas o ID original e alguns campos que não devem ser alterados pelo usuário
-        const usuarioAtualizado: UsuarioSchema = {
-            id,                           // ID original (não pode ser alterado)
+        const usuarioAtualizado: UsuarioSchemaDriver = {
+            id, // ID original (não pode ser alterado)
             nome: dadosCompletos.nome,
             ativo: dadosCompletos.ativo,
             saldo: dadosCompletos.saldo,
-            KAMV: usuarios[indiceUsuario].KAMV,  // Campo gerado pelo sistema, não alterável
-            // Qualquer outro campo não enviado será removido/resetado
+            KAMV: usuarios[indiceUsuario].KAMV,
+            _id: new ObjectId
         };
 
         usuarios[indiceUsuario] = usuarioAtualizado;

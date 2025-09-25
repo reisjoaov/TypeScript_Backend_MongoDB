@@ -1,4 +1,9 @@
-export type UsuarioSchema = {
+import { ObjectId } from 'mongodb';
+import mongoose, { Schema } from 'mongoose';
+import { Usuario } from '../../1entidades/Usuario';
+
+export type UsuarioSchemaDriver = {
+    _id: ObjectId,
     id: number,
     nome: string,
     ativo: boolean,
@@ -6,3 +11,12 @@ export type UsuarioSchema = {
     contato?: { [key: string]: unknown },
     KAMV?: number
 }
+
+const UsuarioSchema: Schema = new Schema({
+    id: {type: Number, require: true, unique: true},
+    nome: {type: String, require: true},
+    ativo: {type: Boolean, default: true},
+    saldo: {type: Number, require: false}
+});
+
+export const UserModel = mongoose.model<Usuario>('User', UsuarioSchema);
