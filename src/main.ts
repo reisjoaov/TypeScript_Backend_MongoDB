@@ -10,9 +10,7 @@ import MongooseConfig from './3infra/dbConfig/mongooseConfig';
 const app = express();
 const port = 3000;
 app.use(express.json());
-
 app.use(Logger.init());
-
 MongooseConfig.connect();
 
 app.use('/api', basicAuthMiddleware, routes);
