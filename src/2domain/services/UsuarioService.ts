@@ -45,7 +45,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
         } as ViewUsuarioDTO));
     }
 
-    public async criarUsuario(dadosUsuario: CriarUsarioDTO): Promise<Usuario[]>{
+    public async criarUsuario(dadosUsuario: CriarUsarioDTO): Promise<Usuario[]> {
         const usuarios = await this.usuarioRepositorio.getUsuarios();
         const idsExistentes = usuarios.map(usuario => usuario.id);
         const novoId = Math.max(...idsExistentes) + 1;
@@ -56,14 +56,11 @@ export default class UsuarioService implements UsuarioServiceInterface {
             dadosUsuario.ativo,
             dadosUsuario.saldo
         );
-
-        await this.usuarioRepositorio.criarUsario(novoUsuario);
-        return await  this.usuarioRepositorio.getUsuarios();
+        return await this.usuarioRepositorio.criarUsario(novoUsuario);
     }
 
     public async atualizarUsuarioParcial(id: number, dadosAtualizacao: Partial<AtualizarUsuarioDTO>): Promise<ViewUsuarioDTO>{
         if (Object.keys(dadosAtualizacao).length === 0) {
-            // TODO: tratar para badrequest
             throw new Error('Pelo menos um campo deve ser enviado para atualização');
         }
 

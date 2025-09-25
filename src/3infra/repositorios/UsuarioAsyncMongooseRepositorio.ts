@@ -1,14 +1,8 @@
-//import { UserModel, UsuarioSchemaDriver } from './UsuarioSchema';
 import { Usuario } from '../../1entidades/Usuario';
-import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRepositorioInterface';
 import 'reflect-metadata';
 import { injectable } from 'inversify';
-import dotenv from 'dotenv';
 import { UserModel } from './UsuarioSchema';
-//import { Collection, MongoClient, MongoServerError, ObjectId, ServerApiVersion } from 'mongodb';
-//import BdException from '../../2domain/exceptions/BdException';
-
-dotenv.config();
+import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRepositorioInterface';
 
 @injectable()
 export default class UsuarioMongooseRepositorio implements UsuarioRepositorioInterface {
@@ -24,18 +18,24 @@ export default class UsuarioMongooseRepositorio implements UsuarioRepositorioInt
         const user = await UserModel.findOne({id}) ?? undefined;
         return user;
     }
+
     async criarUsario(usuario: Usuario): Promise<Usuario[]> {
-        throw new Error('Method not implemented.');
-    }
-    async deletarUsuario(id: number): Promise<boolean> {
-        throw new Error('Method not implemented.');
-    }
-    async atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): Promise<Usuario | undefined> {
-        throw new Error('Method not implemented.');
-    }
-    async substituirUsuario(id: number, dadosCompletos: Usuario): Promise<Usuario | undefined> {
-        throw new Error('Method not implemented.');
+        const user = await UserModel.create(usuario);
+        return [user];
     }
 
-    
+    async deletarUsuario(id: number): Promise<boolean> {
+        const results = await UserModel.deleteOne({id});
+        return results.deletedCount > 0;
+    }
+
+    async atualizarUsuarioParcial(id: number, dadosAtualizados: Partial<Usuario>): Promise<Usuario | undefined> {
+        const result = await UserModel.findOneAndUpdate({id}, dadosAtualizados, {new: true});
+        return result ?? undefined;
+    }
+
+    async substituirUsuario(id: number, dadosCompletos: Usuario): Promise<Usuario | undefined> {
+        const result = await UserModel.findOneAndUpdate({id}, dadosCompletos, {new: true});
+        return result ?? undefined;
+    }    
 }
