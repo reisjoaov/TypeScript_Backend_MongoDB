@@ -1,7 +1,6 @@
 import { Usuario } from '../../1entidades/Usuario';
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
-//import { UserModel } from './UsuarioSchema';
 import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRepositorioInterface';
 import DBModels from './DBModels';
 import { Model } from 'mongoose';
@@ -10,7 +9,7 @@ import { Model } from 'mongoose';
 export default class UsuarioMongooseRepositorio implements UsuarioRepositorioInterface {
     private userModel: Model<Usuario>;    
     constructor( @inject('DBModels') dbModel: DBModels ){
-        this.userModel = dbModel.UserModels;
+        this.userModel = dbModel.userModels;
     }
 
     async getUsuarios(): Promise<Usuario[]> {

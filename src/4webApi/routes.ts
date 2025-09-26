@@ -1,12 +1,15 @@
 import { Router } from 'express';
-import UsuarioController from './controllers/UsuariosController';
 import container from './config/InversifyConfig';
+import LivroController from './controllers/LivroController';
+import UsuariosRoutes from './routes/UsuariosRoutes';
 
 const routes = Router();
 
-const usuarioController = container.get<UsuarioController>('UsuarioController');
+const usuarioRoutes = container.get<UsuariosRoutes>('UsuariosRoutes');
+const livroController = container.get<LivroController>('LivroController');
 
 // Test Driven Design
-routes.use('/usuarios', usuarioController.router);
+routes.use('/usuarios', usuarioRoutes.router);
+routes.use('/livros', livroController.router);
 
 export default routes;

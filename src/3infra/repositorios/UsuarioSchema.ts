@@ -9,4 +9,7 @@ export const UsuarioSchema: Schema = new Schema({
     contato: ContatoSchema,
 });
 
-//export const UserModel = mongoose.model<Usuario>('User', UsuarioSchema);
+export const LivroSchema: Schema = new Schema({
+    nome: {type: String, require: true},
+    autores: [{type: Schema.Types.ObjectId, ref: 'User'}],
+});
