@@ -18,7 +18,6 @@ export default class LivroRepositorio implements LivroRepositorioInterface {
 
     async criar(livroDTO: Livro): Promise<Livro> {
         const livro = new this.livroModel(livroDTO);
-        livro.save();
         return await livro.save();
     }
 

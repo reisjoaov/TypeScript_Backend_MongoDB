@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import LivroServiceInterface from '../../2domain/interfaces/LivroServiceInterface';
-import { NextFunction, Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import Livro from '../../1entidades/Livro';
 
 @injectable()
@@ -24,11 +24,11 @@ class LivroController {
     }
 
     async BuscarTodos (req: Request, res: Response): Promise <void>{
-        const usuarios = await this.livroService.buscarTodos();
-        res.status(200).json(usuarios);
+        const livros = await this.livroService.buscarTodos();
+        res.status(200).json(livros);
     }
 
-    async criar (req: Request, res: Response): Promise <void>{
+    async criar (req: Request, res: Response): Promise <void> {
         const dadosLivros: Livro = req.body;
         const livro = await this.livroService.criar(dadosLivros);
         res.status(201).json(livro);
@@ -37,7 +37,7 @@ class LivroController {
     async deletar (req: Request, res: Response): Promise <void>{
         const id = req.params.id;
         await this.livroService.deletar(id);
-        res.status(204).json('Livro deletado com sucesso');
+        res.json('Livro deletado com sucesso');
     }
 }
 

@@ -22,7 +22,7 @@ export default class LivroService implements LivroServiceInterface {
     }
     
     async criar(livro: Livro): Promise<Livro> {
-        return this.livroRepositorio.criar(livro);
+        return await this.livroRepositorio.criar(livro);
     }
 
     async deletar(id: string): Promise<void> {

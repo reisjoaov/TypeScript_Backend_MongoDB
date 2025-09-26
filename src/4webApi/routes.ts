@@ -8,7 +8,6 @@ const routes = Router();
 const usuarioRoutes = container.get<UsuariosRoutes>('UsuariosRoutes');
 const livroController = container.get<LivroController>('LivroController');
 
-// Test Driven Design
 routes.use('/usuarios', usuarioRoutes.router);
 routes.use('/livros', livroController.router);
 
