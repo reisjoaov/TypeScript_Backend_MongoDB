@@ -1,4 +1,4 @@
-import { Livro } from '../../entidades/Livro';
+import Livro from '../../1entidades/Livro';
 
 interface LivroRepositorioInterface {
   buscarTodos(): Promise<(Livro | undefined)[]>;
