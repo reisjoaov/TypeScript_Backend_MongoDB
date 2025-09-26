@@ -8,9 +8,13 @@ import UsuarioRepositorioInterface from '../../2domain/interfaces/UsuarioAsyncRe
 // import UsuarioRepositorio from '../../3infra/repositorios/UsuarioAsyncRepositorio';
 //import UsuarioMongoRepositorio from '../../3infra/repositorios/UsuarioAsyncMongoRepositorio';
 import UsuarioMongooseRepositorio from '../../3infra/repositorios/UsuarioAsyncMongooseRepositorio';
+import DBModels from '../../3infra/repositorios/DBModels';
 
 const container = new Container();
 
+container
+    .bind<DBModels>('DBModels')
+    .to(DBModels).inRequestScope();
 container
     .bind<UsuarioRepositorioInterface>('UsuarioRepositorio')
     .to(UsuarioMongooseRepositorio).inRequestScope();

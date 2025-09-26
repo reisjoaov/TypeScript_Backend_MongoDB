@@ -1,6 +1,4 @@
-import { Usuario } from "./Usuario";
-
-// DRY - Dont repeat yourself
+import { Usuario } from './Usuario';
 
 export class Professor extends Usuario {
     private tipo: string = 'Professor';
@@ -14,12 +12,11 @@ export class Professor extends Usuario {
         sobrenome?: string,
         supervisor?: string
     ) {
-        super(id, nome, ativo, saldo, sobrenome);
+        super(id, nome, ativo, {}, saldo, sobrenome);
         this.supervisor = supervisor;
     }
 
     organizarAulas(): void {
         console.log('Ministrar aulas');
     }
-
 }

@@ -7,6 +7,7 @@ import { AtualizarUsuarioDTO } from '../dtos/AtualizarUsuarioDTO';
 import { CriarUsarioDTO } from '../dtos/CriarUsarioDTO';
 import { ViewUsuarioDTO } from '../dtos/ViewUsuarioDTO';
 import UsuarioServiceInterface from '../interfaces/UsuarioServiceInterface';
+import ContatoVO from '../../1entidades/VO/ContatoVO';
 
 @injectable()
 export default class UsuarioService implements UsuarioServiceInterface {
@@ -29,6 +30,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             id: usuario.id,
             nome: usuario.nome,
             ativo: usuario.ativo,
+            contato: usuario.contato,
             NumeroDoc: usuario.NumeroDoc,
         };
 
@@ -41,6 +43,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             id: usuario.id,
             nome: usuario.nome,
             ativo: usuario.ativo,
+            contato: usuario.contato,
             NumeroDoc: usuario.NumeroDoc,
         } as ViewUsuarioDTO));
     }
@@ -54,6 +57,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             novoId,
             dadosUsuario.nome,
             dadosUsuario.ativo,
+            dadosUsuario.contato ?? new ContatoVO(),
             dadosUsuario.saldo
         );
         return await this.usuarioRepositorio.criarUsario(novoUsuario);
@@ -74,6 +78,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             id: usuario.id,
             nome: usuario.nome,
             ativo: usuario.ativo,
+            contato: usuario.contato,
             NumeroDoc: usuario.NumeroDoc
         };
     }
@@ -89,6 +94,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             id: usuario.id,
             nome: usuario.nome,
             ativo: usuario.ativo,
+            contato: usuario.contato,
             NumeroDoc: usuario.NumeroDoc,
         };
     }
