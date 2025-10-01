@@ -16,6 +16,11 @@ export default class LivroService implements LivroServiceInterface {
     ) {
         this.livroRepositorio = livroRepositorio;
     }
+    async adicionarAutor(userId: number, bookData: Livro): Promise<Livro | undefined> {
+        const livro = await this.livroRepositorio.adicionarAutor(userId, bookData);
+        if (!livro) throw new NotFoundException('Usuario, ou livro não existe');
+        return livro;
+    }
 
     async buscarTodos(): Promise<(Livro | undefined)[]> {
         return await this.livroRepositorio.buscarTodos();

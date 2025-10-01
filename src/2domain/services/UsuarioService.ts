@@ -32,6 +32,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             ativo: usuario.ativo,
             contato: usuario.contato,
             NumeroDoc: usuario.NumeroDoc,
+            livros: usuario.livros,
         };
 
         return usuarioDto;
@@ -58,6 +59,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             dadosUsuario.nome,
             dadosUsuario.ativo,
             dadosUsuario.contato ?? new ContatoVO(),
+            [],
             dadosUsuario.saldo
         );
         return await this.usuarioRepositorio.criarUsario(novoUsuario);
@@ -79,7 +81,8 @@ export default class UsuarioService implements UsuarioServiceInterface {
             nome: usuario.nome,
             ativo: usuario.ativo,
             contato: usuario.contato,
-            NumeroDoc: usuario.NumeroDoc
+            NumeroDoc: usuario.NumeroDoc,
+            livros: usuario.livros
         };
     }
 
@@ -96,6 +99,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             ativo: usuario.ativo,
             contato: usuario.contato,
             NumeroDoc: usuario.NumeroDoc,
+            livros: usuario.livros
         };
     }
 

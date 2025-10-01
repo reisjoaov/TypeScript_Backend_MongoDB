@@ -1,3 +1,5 @@
+import { publicDecrypt } from 'crypto';
+import Livro from './Livro';
 import ContatoVO from './VO/ContatoVO';
 
 export class Usuario {
@@ -9,16 +11,24 @@ export class Usuario {
     NumeroDoc?: number;
     senha?: string;
     sobrenome?: string;
-
-    constructor(id: number, nome: string, ativo: boolean, contato: ContatoVO, saldo?: bigint, sobrenome?: string) {
+    livros: Livro[] = [];
+    
+    constructor(
+        id: number,
+        nome: string,
+        ativo: boolean,
+        contato: ContatoVO,
+        livros: Livro[],
+        saldo?: bigint,
+        sobrenome?: string
+    ) {
         this.id = id;
         this.nome = nome;
         this.ativo = ativo;
         this.contato = contato;
+        this.livros = livros;
         this.saldo = saldo;
         this.senha = 'minha senha';
         this.sobrenome = sobrenome;
     }
 }
-
-

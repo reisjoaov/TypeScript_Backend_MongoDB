@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { ContatoSchema } from './ContatoSchema';
+import { LivroSchema } from './LivroSchema';
 
 export const UsuarioSchema: Schema = new Schema({
     id: {type: Number, require: true, unique: true},
@@ -7,9 +8,7 @@ export const UsuarioSchema: Schema = new Schema({
     ativo: {type: Boolean, default: true},
     saldo: {type: Number, require: false},
     contato: ContatoSchema,
+    livros: [LivroSchema]
 });
 
-export const LivroSchema: Schema = new Schema({
-    nome: {type: String, require: true},
-    autores: [{type: Schema.Types.ObjectId, ref: 'User'}],
-});
+export { LivroSchema };
