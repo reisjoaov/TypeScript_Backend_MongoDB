@@ -21,7 +21,6 @@ export default class LivroRepositorio implements LivroRepositorioInterface {
         if (usuario){
             usuario.livros.push(bookData);
             await usuario.save();
-
             return await this.livroModel.findOneAndUpdate(
                 {nome: bookData.nome},
                 {$addToSet: {autores: usuario._id}},
@@ -32,7 +31,7 @@ export default class LivroRepositorio implements LivroRepositorioInterface {
     }
     
     async buscarTodos(): Promise<(Livro | undefined)[]> {
-        return this.livroModel.find();
+        return this.livroModel.find().populate('autores');
     }
 
     async criar(livroDTO: Livro): Promise<Livro> {

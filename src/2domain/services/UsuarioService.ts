@@ -46,6 +46,7 @@ export default class UsuarioService implements UsuarioServiceInterface {
             ativo: usuario.ativo,
             contato: usuario.contato,
             NumeroDoc: usuario.NumeroDoc,
+            livros: usuario.livros,
         } as ViewUsuarioDTO));
     }
 
