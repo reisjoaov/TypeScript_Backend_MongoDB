@@ -1,4 +1,3 @@
-// Quebra da arquitetura limpa para adiantar a aula
 import { ObjectId } from 'mongoose';
 
 class Livro {

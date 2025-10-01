@@ -1,114 +1,27 @@
 # Procedimento para iniciar
-
 Para visualizar melhor este arquivo aperte ctrl + shit + v
 
-## Dependências para este projeto
+# Objetivo
 
+A API realiza as operações CRUD de um sistema de controle de cadastros de usuários e livros através de métodos HTTP.
+O banco de dados utilizado no projeto é MongoDB, através do ODM Mongoose.
+
+## Dependências para este projeto
 As seguintes versões foram utilizadas neste projeto:
 
-- node@22.4.0
-- npm@10.8.1
+- node@24.5.0
+- npm@11.5.1
+- mongodb@6.20.0"
+- mongoose@8.18.2"
 
 ## Instalação inicial do projeto
-
-1. Inicialize o projeto de node.js executando o comando abaixo no terminal:
-
-```bash
-npm init # inicia o projeto de node
-```
-
-2. Responda os itens da forma que desejar. Ps. Você poderá alterá-lo depois.
-
-Na opção "entry point:", recomendo colocar o "src/index.ts".
-
-Será criado uma arquivo package.json na raiz do seu diretório. Exemplo do resultado:
-```json
-{
-  "name": "tsbackend",
-  "version": "0.0.1",
-  "description": "Código das aulas de typescript back do instituto Infnet",
-  "main": "src/index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Renan Torres",
-  "license": "ISC"
-}
-```
-
-4. Instale as dependências necessárias ao typescript executando o comando abaixo no terminal:
+1. Os arquivos package.json e tsconfig.json já estão pré configurados, instale as dependências necessárias com o comando abaixo no terminal:
 
 ```bash
-npm i typescript @types/node ts-node --save-dev 
-# instala deps do ts como deps de dev
+npm i
 ```
-
-5. Crie uma pasta "src" para separar o código da aplicação das configurações externar:
-
-```bash
-mkdir src  # cria o diretorio fonte
-```
-
-6. Inicie o typescript com o comando abaixo:
-
-```bash
-npx tsc --init # inicializa o typescript
-```
-
-Agora você terá um arquivo tsconfig.json na pasta raíz do seu projeto
-
-7. Para utilizar o hot reload instale o ts-node-dev
-
-```bash
-npm install --save-dev ts-node-dev
-```
-
-```json
-"scripts": {
-  "dev": "ts-node-dev src/main.ts"
-}
-```
-
 
 ## Configurações
-
-### No arquivo tsconfig.json (se encontra na raíz do projeto)
-
-1. Descomente a linha '"rootDir": "./",' (remova os '//' antes da linha) ;
-
-2. Altere o  '"rootDir": "./",' para  '"rootDir": "./src",'.
-
-3. Descomente  "outDir": "./", e altere para   "outDir": "./dist",
-
-Resultado final:
-
-```json
-{
-  "compilerOptions": {
-    "target": "es2020", 
-    "module": "commonjs",   
-    "rootDir": "./src",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true 
-  }
-} 
-```
-
-### No arquivo package.json
-
-1. Dentro das chaves de scripts adicionar a linha start:
-
-```ts
-  "scripts": {
-    "start": "ts-node src/index.ts",
-    // demais scripts que desejar...
-    "build": "npx tsc"
-  },
-```
 
 ### Debugger
 
@@ -118,335 +31,137 @@ Resultado final:
 npm run build
 ```
 
-ou:
+### Variável de ambiente
 
-```bash
-npx tsc
-```
+1. É necessário configurar o arquivo de variáveis de  ambiente. Para isso renomeie o arquivo ".env-example" para ".env".
 
-2. Na pasta raíz, criar arquivo ".vscode/launch.json"
+2. Substituia o campo "MONGO_DB_KEY" pela chave de conexão do seu banco de dados MongoDB e o atributo "appName" do campo DB_OPTIONS pelo nome do seu Cluster
 
-3. Copie e cole a configuração abaixo dentro do arquivo:
-
-```json
-{
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Debug TS",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/src/index.ts",
-            "runtimeArgs": ["-r", "ts-node/register"],
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js"
-            ]
-        },
-    ]
-}
-```
-
-4. Variável de ambiente
-
-```bash
-node --env-file=.env index.js
-```
 ```env
-NODE_OPTIONS='--title="Testing Node v20.6.0"'
-USER_NAME='Renan Torres'
+API_KEY=X
+MONGO_DB_KEY=mongodb+srv://<SeuUsuario>:<SuaSenha>@cluster0.oc26dee.mongodb.net/
+DATABASE=tsmongo
+DB_OPTIONS=retryWrites=true&w=majority&appName=Cluster0
 ```
 
-5. Opcional Lint
+
+## Executando o código
+
+1. Rode o script de dev para executar o servidor na porta http://localhost:3000
 
 ```bash
-npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
-npx eslint --init
+npm run dev
 ```
 
-(Atualizado 2025) Respostas que usei na Configuração ao usar o npx eslint --init
+## Executando endpoints de usuários
+
+Todos os endpoints são protegidos por uma senha de acesso. Para executá-los é necessário inserir as credenciais abaixo na aba de autorização do Postman:
+
 ```bash
-npx eslint --init
-You can also run this command directly using 'npm init @eslint/config@latest'.
-
-> tsbackend@1.0.0 npx
-> create-config
-
-@eslint/create-config: v1.10.0
-
-√ What do you want to lint? · javascript, json, jsonc, md
-√ How would you like to use ESLint? · problems
-√ What type of modules does your project use? · esm
-√ Which framework does your project use? · none
-√ Does your project use TypeScript? · No / Yes
-√ Where does your code run? · node
-√ Which language do you want your configuration file be written in? · ts
-√ What flavor of Markdown do you want to lint? · gfm
-Jiti is required for Node.js <24.3.0 to read TypeScript configuration files.
-√ Would you like to add Jiti as a devDependency? · No / Yes
-The config that you've selected requires the following dependencies:
+Username: UsuarioValido
+Password: SenhaValida
 ```
 
-(Atualizado 2025) Criar, ou modificar, o arquivo de configuração .eslintrc.mts: 
+1. Consulta de todos usuários
 
-```ts
-import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-import json from '@eslint/json';
-import markdown from '@eslint/markdown';
-import { defineConfig } from 'eslint/config';
+O primeiro endpoint busca todos os produtos registrados em nosso banco de dados. Para isso fazer um request de método GET no endereço:
 
-const tsConfig = tseslint.config(
-  ...tseslint.configs.recommended,
-  {
-    languageOptions: {
-      globals: globals.node,
-    },
-    rules: {
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'quotes': ['error', 'single'], // força aspas simples
-      'semi': ['error', 'always'],   // força ponto e vírgula
-    },
-  }
-);
-
-export default defineConfig([
-  { files: ['**/*.{js,mjs,cjs,ts,mts,cts}'], plugins: { js }, extends: ['js/recommended'], languageOptions: { globals: globals.node } },
-  tsConfig,
-  { files: ['**/*.json'], plugins: { json }, language: 'json/json', extends: ['json/recommended'] },
-  { files: ['**/*.jsonc'], plugins: { json }, language: 'json/jsonc', extends: ['json/recommended'] },
-  { files: ['**/*.md'], plugins: { markdown }, language: 'markdown/gfm', extends: ['markdown/recommended'] },
-]);
+```bash
+localhost:3000/api/usuarios/
 ```
 
-versão sem erro de tipo
-```ts
-import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-import json from '@eslint/json';
-import markdown from '@eslint/markdown';
-import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
+2. Consulta de um usuário por Id
 
-const tsConfig: FlatConfig.Config[] = [
-  ...tseslint.configs.recommended,
-  {
-    files: ['**/*.{ts,mts,cts}'],
-    languageOptions: {
-      globals: globals.node,
-    },
-    rules: {
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
-    },
-  }
-];
+O segundo endpoint busca um único usuário baseado em seu id. Para isso fazer um request de método GET no endereço localhost:3000/api/usuarios/id. Exemplo:
 
-export default [
-  {
-    files: ['**/*.{js,mjs,cjs}'],
-    ...js.configs.recommended,
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  ...tsConfig,
-  {
-    files: ['**/*.json'],
-    language: 'json/json',
-    ...json.configs.recommended,
-    plugins: { json },
-  },
-  {
-    files: ['**/*.jsonc'],
-    language: 'json/jsonc',
-    ...json.configs.recommended,
-    plugins: { json },
-  },
-  {
-    files: ['**/*.md'],
-    plugins: { markdown },
-    language: 'markdown/gfm',
-    ...markdown.configs.recommended,
-  },
-];
+```bash
+localhost:3000/api/usuarios/123
 ```
 
-Adiciona um script para o lint no package.json:
-```json
+3. Deleta usuário por Id
+
+O terceiro endpoint apaga um único usuário baseado em seu id. Para isso fazer um request de método DELETE no endereço localhost:3000/api/produtos/id. Exemplo:
+
+```bash
+localhost:3000/api/usuarios/123
+```
+
+4. Atualiza usuário por Id
+
+O quarto endpoint atualiza uma ou mais propriedades de um único usuário baseado em seu id. Para isso fazer um request de método PATCH no endereço localhost:3000/api/produtos/id. Exemplo:
+
+```bash
+localhost:3000/api/produtos/123
+```
+
+Para indicar quais propriedades serão alteradas é necessário informar no body da requisição, em formato RAW JSON. Segue exemplo para alterar as informações de preço e catergoria de um produto:
+
+```bash
 {
-    "scripts": {
-        //... demais scripts...
-        "lint": "eslint ./src/**/*.ts --fix"
+    "nome": "Pedro",
+    "ativo": "false"
+}
+```
+
+5. Cria usuário
+
+O quinto endpoint cria um novo usuário e o adiciona ao banco de dados. Para isso fazer um request de método POST no endereço localhost:3000/api/usuarios/. Exemplo:
+
+```bash
+localhost:3000/api/usuarios
+```
+
+```bash
+ {
+    "nome": "Rafaela",
+    "ativo": "true",
+    "saldo": 250
+ }
+```
+
+## Executando endpoints de livros
+
+1. Consulta de todos livros
+
+O primeiro endpoint busca todos os livros registrados em nosso banco de dados. Para isso fazer um request de método GET no endereço:
+
+```bash
+localhost:3000/api/livros/
+```
+
+2. Adicionar um autor ao livro
+
+O segundo endpoint relaciona um usuário do banco dados como autor de um livro, também cadastro no banco de dados. Para isso fazer um request de método PATCH no endereço localhost:3000/api/usuarios/id. Exemplo:
+
+É necessário informar no body da requisição, em formato RAW JSON o Id do usuário autor e o nome do livro. Segue exemplo:
+
+```bash
+{
+    "userId": 123,
+    "bookData": {
+        "nome": "Codigo Limpo"
     }
 }
 ```
 
-Adicionar o eslint no settings.json do vscode (Aperte 'ctrl + alt + p' e busque por settings.json e escolha a opção default ) 
+3. Deleta um livro por Id
 
-```json
-{
-    "workbench.iconTheme": "vscode-icons",
-    // Configurações do ESLint
-    "eslint.validate": [
-        "javascript",
-        "typescript"
-    ],
-    // Actions no save
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
-    },
-    // Configurações gerais do editor
-    "editor.formatOnSave": true,
-}
-```
-
-### Instalando documentação Swagger
-
-Instale as dependências
+O terceiro endpoint apaga um único livro baseado em seu objectId gerado pelo MongoDB. Para isso fazer um request de método DELETE no endereço localhost:3000/api/produtos/id. Exemplo:
 
 ```bash
-npm install swagger-jsdoc swagger-ui-express
-npm install -D @types/swagger-jsdoc @types/swagger-ui-express
-```
-Crie um arquivo de configuração do swagger
-```ts
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
-import { Application } from 'express';
-
-const options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'API de Usuários',
-      version: '1.0.0',
-      description: 'API REST para gerenciamento de usuários desenvolvida com Express e TypeScript',
-      contact: {
-        name: 'Desenvolvedor',
-        email: 'dev@exemplo.com'
-      },
-      license: {
-        name: 'MIT',
-        url: 'https://opensource.org/licenses/MIT'
-      }
-    },
-    servers: [
-      {
-        url: 'http://localhost:3000/api',
-        description: 'Servidor de Desenvolvimento'
-      },
-      {
-        url: 'https://api.exemplo.com',
-        description: 'Servidor de Produção'
-      }
-    ],
-  },
-  apis: [
-    './src/controllers/*.ts',  // Caminho para seus controllers
-    './src/routes/*.ts',       // Caminho para suas rotas (se houver)
-    './src/models/*.ts',       // Caminho para seus models (se houver)
-  ],
-};
-
-const specs = swaggerJsdoc(options);
-
-export const setupSwagger = (app: Application): void => {
-  // Middleware para servir a documentação Swagger
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
-    explorer: true,
-    customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'API de Usuários - Documentação',
-    swaggerOptions: {
-      persistAuthorization: true,
-      displayRequestDuration: true,
-    }
-  }));
-
-  // Endpoint para obter a especificação OpenAPI em JSON
-  app.get('/api-docs.json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(specs);
-  });
-
-  console.log('📚 Documentação Swagger disponível em: http://localhost:3000/api-docs');
-};
-
-export default setupSwagger;
+localhost:3000/api/livros/68c75a4de842eb959ec16f0d
 ```
 
-Chame a configuração no main.ts
+4. Cria um livro
 
-```ts
-import setupSwagger from './Api/config/Swagger';
+O quarto e último endpoint cria um novo livro e o adiciona ao banco de dados. Para isso fazer um request de método POST no endereço localhost:3000/api/livros/. Exemplo:
 
-const app = express();
-const port = 3000;
-
-app.use(express.json());
-
-setupSwagger(app);
-//... resto do código...
+```bash
+localhost:3000/api/livros/
 ```
 
-Insira JSDocs do swagger no método do controller que você quer adicionar a documentação. 
-
-Ex.:
-```ts
-// UsuarioController
-    /**
-     * @swagger
-     * /usuarios/{id}:
-     *   get:
-     *     summary: Busca um usuário por ID
-     *     tags: [Usuários]
-     *     description: Retorna os dados de um usuário específico pelo seu ID
-     *     parameters:
-     *       - in: path
-     *         name: id
-     *         schema:
-     *           type: number
-     *         required: true
-     *         description: ID numérico do usuário
-     *         example: 1
-     *     responses:
-     *       200:
-     *         description: Usuário encontrado com sucesso
-     *         content:
-     *           application/json:
-     *             schema:
-     *               $ref: '#/components/schemas/ViewUsuarioDTO'
-     *             example:
-     *               id: 1
-     *               nome: "João Silva"
-     *               ativo: true
-     *               NumeroDoc: "12345678"
-     *       400:
-     *         $ref: '#/components/responses/BadRequest'
-     *       404:
-     *         $ref: '#/components/responses/NotFound'
-     */
-    public buscarUsuarioPorId(req: Request, res: Response) {
-        const erros = validationResult(req);
-        if (!erros.isEmpty()) {
-            throw new BadRequestException(erros.array());
-        }
-        const id = req.params.id;
-
-        const usuarioDto = this.usuarioService.buscarId(+id);
-
-        res.status(200).json(usuarioDto);
-    }
+```bash
+ {
+    "nome": "Codigo limpo"
+ }
 ```
-
-Precia pegar o .env-example e renomar para .env com sua senhas
